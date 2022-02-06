@@ -1,4 +1,4 @@
-from controllers import ArxivApi
+from services.api.arxiv_api import ArxivApi
 
 if __name__ == '__main__':
 
