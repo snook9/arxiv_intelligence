@@ -5,9 +5,9 @@ Highlighting the relationship between authors and scientists
 """
 
 import arxiv
-from .api_interface import ApiInterface
+from .arxiv_api_interface import ArxivApiInterface
 
-class ArxivApi(ApiInterface):
+class ArxivApi(ArxivApiInterface):
     """Arxiv Api using arxiv python library"""
     def get_pdf(self: object):
         """Returns the pdf list from arxiv web site"""
