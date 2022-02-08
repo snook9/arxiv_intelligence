@@ -1,9 +1,16 @@
-import urllib, urllib.request
+"""
+Name: arXiv Intelligence
+Authors: Jonathan CASSAING
+Highlighting the relationship between authors and scientists
+"""
+
 import arxiv
 from .api_interface import ApiInterface
 
 class ArxivApi(ApiInterface):
+    """Arxiv Api using arxiv python library"""
     def get_pdf(self: object):
+        """Returns the pdf list from arxiv web site"""
         search = arxiv.Search(
             # Only IA subject
             query = "cat:cs.AI",
