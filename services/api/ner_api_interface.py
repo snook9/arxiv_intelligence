@@ -11,3 +11,7 @@ class NerApiInterface(ABC):
     @abstractmethod
     def post_document(self: object, doc_url: str):
         """Post a document URL to arXiv Intelligence web service"""
+
+    @abstractmethod
+    def get_document_metadata(self: object, document_id: int):
+        """Get metadata form a document"""
