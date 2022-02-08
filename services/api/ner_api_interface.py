@@ -9,5 +9,5 @@ from abc import ABC, abstractmethod
 class NerApiInterface(ABC):
     """Interface of the arXiv Intelligence NER web service"""
     @abstractmethod
-    def post_document(self: object, pdf_url: str):
+    def post_document(self: object, doc_url: str):
         """Post a document URL to arXiv Intelligence web service"""
