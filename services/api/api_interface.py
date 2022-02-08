@@ -3,5 +3,5 @@ from abc import ABC, abstractmethod
 class ApiInterface(ABC):
     """Interface of an ApiController"""
     @abstractmethod
-    def getData():
+    def get_pdf(self: object):
         pass

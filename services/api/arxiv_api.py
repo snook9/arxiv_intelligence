@@ -1,8 +1,19 @@
 import urllib, urllib.request
+import arxiv
 from .api_interface import ApiInterface
 
 class ArxivApi(ApiInterface):
-    def getData(self):
-        url = 'http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=1'
-        data = urllib.request.urlopen(url)
-        return data
+    def get_pdf(self: object):
+        search = arxiv.Search(
+            # Only IA subject
+            query = "cat:cs.AI",
+            max_results = 10,
+            sort_by = arxiv.SortCriterion.SubmittedDate
+        )
+
+        pdf_list = []
+        for result in search.results():
+            #print("Categories:", result.categories)
+            pdf_list.append(result.pdf_url)
+
+        return pdf_list
