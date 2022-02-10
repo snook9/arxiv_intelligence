@@ -11,7 +11,8 @@ from .ner_api_interface import NerApiInterface
 
 class NerApi(NerApiInterface):
     """API of the arXiv Intelligence NER web service"""
-    def _get(self: object, base_url: str, parameters: str):
+    @staticmethod
+    def _get(base_url: str, parameters: str):
         try:
             # We open the URL
             with urllib.request.urlopen(base_url + parameters) as response:
