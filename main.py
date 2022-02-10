@@ -5,8 +5,8 @@ Highlighting the relationship between authors and scientists
 """
 
 import json
+import sys
 import time
-from entities.message import MessageDecoder
 from services.api.arxiv_api import ArxivApi
 from services.api.ner_api import NerApi
 
@@ -19,9 +19,10 @@ if __name__ == '__main__':
         print("PDF:", pdf)
 
     ner_api = NerApi()
-    data = ner_api.post_document(pdf_list.pop())
+    message = ner_api.post_document(pdf_list.pop())
+    if message is None:
+        sys.exit()
 
-    message = json.loads(data, object_hook=MessageDecoder().dict_to_object)
     print("ID:", message.object_id)
     print("MSG:", message.message)
 

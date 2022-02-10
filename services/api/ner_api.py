@@ -4,7 +4,9 @@ Authors: Jonathan CASSAING
 Highlighting the relationship between authors and scientists
 """
 
+import json
 import urllib.request
+from entities.message import MessageEntity, MessageDecoder
 from .ner_api_interface import NerApiInterface
 
 class NerApi(NerApiInterface):
@@ -20,9 +22,15 @@ class NerApi(NerApiInterface):
         except urllib.error.URLError as err:
             print(f"Incorrect URL: {err}")
 
-    def post_document(self: object, doc_url: str):
+        return None
+
+    def post_document(self: object, doc_url: str) -> MessageEntity:
         """Post a document URL to arXiv Intelligence web service"""
-        return self._get("http://localhost:5000/", "?doc_url=" + doc_url)
+        data = self._get("http://localhost:5000/", "?doc_url=" + doc_url)
+        if data is None:
+            return None
+        message = json.loads(data, object_hook=MessageDecoder().dict_to_object)
+        return message
 
     def get_document_metadata(self: object, document_id: int):
         """Get metadata form a document"""
