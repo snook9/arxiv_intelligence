@@ -6,7 +6,8 @@ Highlighting the relationship between authors and scientists
 
 import json
 import urllib.request
-from entities.message import MessageEntity, MessageDecoder
+from entities.message import MessageEntity
+from entities.document import DocumentEntity
 from .ner_api_interface import NerApiInterface
 
 class NerApi(NerApiInterface):
@@ -30,9 +31,12 @@ class NerApi(NerApiInterface):
         data = self._get("http://localhost:5000/", "?doc_url=" + doc_url)
         if data is None:
             return None
-        message = json.loads(data, object_hook=MessageDecoder().dict_to_object)
-        return message
+        return MessageEntity.from_json(json.loads(data))
 
-    def get_document_metadata(self: object, document_id: int):
+    def get_document_metadata(self: object, document_id: int) -> DocumentEntity:
         """Get metadata form a document"""
-        return self._get("http://localhost:5000/", "document/metadata/" + str(document_id))
+        data = self._get("http://localhost:5000/", "document/metadata/" + str(document_id))
+        if data is None:
+            return None
+        #document = json.loads(data, object_hook=DocumentDecoder().to_object)
+        return DocumentEntity.from_json(json.loads(data))

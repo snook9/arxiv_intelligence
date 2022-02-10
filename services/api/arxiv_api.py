@@ -14,7 +14,7 @@ class ArxivApi(ArxivApiInterface):
         search = arxiv.Search(
             # Only IA subject
             query = "cat:cs.AI",
-            max_results = 10,
+            max_results = 1,
             sort_by = arxiv.SortCriterion.SubmittedDate
         )
 

@@ -4,7 +4,6 @@ Authors: Jonathan CASSAING
 Highlighting the relationship between authors and scientists
 """
 
-import json
 import sys
 import time
 from services.api.arxiv_api import ArxivApi
@@ -30,7 +29,6 @@ if __name__ == '__main__':
         STATUS = None
         while STATUS != "SUCCESS":
             time.sleep(2)
-            data = ner_api.get_document_metadata(message.object_id)
-            data = json.loads(data)
-            STATUS = data["status"]
-            print(data)
+            document = ner_api.get_document_metadata(message.object_id)
+            STATUS = document.status
+            print(document.status)
