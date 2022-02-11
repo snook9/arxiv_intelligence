@@ -4,6 +4,8 @@ Authors: Jonathan CASSAING
 Highlighting the relationship between authors and scientists
 """
 
+from entities.named_entity import NamedEntity
+
 class DocumentEntity:
     """Document representation"""
 
@@ -20,9 +22,6 @@ class DocumentEntity:
     content = None
     named_entities = None
 
-    def __init__(self: object):
-        pass
-
     @staticmethod
     def from_json(data):
         """Convert a json dict to object"""
@@ -38,7 +37,9 @@ class DocumentEntity:
         obj.number_of_pages = data["number_of_pages"]
         obj.raw_info = data["raw_info"]
         try:
-            obj.named_entities = data["named_entities"]
+            obj.named_entities = []
+            for item in data["named_entities"]:
+                obj.named_entities.append(NamedEntity.from_json(item))
         except KeyError:
             pass
         return obj

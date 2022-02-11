@@ -31,4 +31,5 @@ if __name__ == '__main__':
             time.sleep(2)
             document = ner_api.get_document_metadata(message.object_id)
             STATUS = document.status
-            print(document.status)
+
+    print(document.status)
