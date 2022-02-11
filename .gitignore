@@ -1,4 +1,5 @@
 # Project
+log/
 tmp/
 owl/output_*.owl
 
