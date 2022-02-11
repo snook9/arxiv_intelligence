@@ -8,6 +8,7 @@ import time
 import logging
 from pathlib import Path
 from datetime import datetime
+from progress.bar import IncrementalBar
 from services.api.arxiv_api import ArxivApi
 from services.api.ner_api import NerApi
 from services.ontology.ontology_service import OntologyService
@@ -37,6 +38,9 @@ if __name__ == '__main__':
     # We instantiate an ontology
     ontology_service = OntologyService()
 
+    # We create a progress bar
+    progress_bar = IncrementalBar('Processed files', max = len(pdf_list))
+
     # For each PDF document
     for pdf in pdf_list:
         # We give the PDF URL to the NER Web Service
@@ -54,7 +58,7 @@ if __name__ == '__main__':
             # We get the metadata of the PDF
             # As the process is async, we try the request several times
             while STATUS != "SUCCESS":
-                time.sleep(3)
+                time.sleep(2)
                 document = ner_api.get_document_metadata(message.object_id)
                 STATUS = document.status
 
@@ -66,6 +70,9 @@ if __name__ == '__main__':
                 ontology_service.add_named_entity(named_entity)
 
             logging.info("ID: %s | named entities added to the ontology", message.object_id)
+            progress_bar.next()
+
+    progress_bar.finish()
 
     # At the end of the PDF list
     # We write the ontology in a folder
