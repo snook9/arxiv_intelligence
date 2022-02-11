@@ -12,12 +12,12 @@ from services.api.ner_api import NerApi
 from services.ontology.ontology_service import OntologyService
 
 if __name__ == '__main__':
+    MAX_PDF_NUMBER = 10
 
     print("arXiv Intelligence v0.0.1")
 
-    pdf_list = ArxivApi().get_pdf()
-    for pdf in pdf_list:
-        print("PDF:", pdf)
+    pdf_list = ArxivApi(MAX_PDF_NUMBER).get_pdf()
+    print(len(pdf_list), "PDF file(s) retrieved")
 
     ner_api = NerApi()
     message = ner_api.post_document(pdf_list.pop())
@@ -28,11 +28,11 @@ if __name__ == '__main__':
     print("MSG:", message.message)
 
     if message.object_id != -1:
-        status = None
-        while status != "SUCCESS":
+        STATUS = None
+        while STATUS != "SUCCESS":
             time.sleep(2)
             document = ner_api.get_document_metadata(message.object_id)
-            status = document.status
+            STATUS = document.status
 
     ontology_service = OntologyService()
     for named_entity in document.named_entities:
