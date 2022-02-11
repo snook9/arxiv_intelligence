@@ -1,5 +1,6 @@
 # Project
 tmp/
+owl/output_*.owl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -6,6 +6,7 @@ Highlighting the relationship between authors and scientists
 
 import sys
 import time
+from datetime import datetime
 from services.api.arxiv_api import ArxivApi
 from services.api.ner_api import NerApi
 from services.ontology.ontology_service import OntologyService
@@ -36,4 +37,6 @@ if __name__ == '__main__':
     ontology_service = OntologyService()
     for named_entity in document.named_entities:
         ontology_service.build_ontology(named_entity)
-    ontology_service.save("tmp/temp.owl")
+
+    today = datetime.today().strftime("%Y-%m-%d-%H-%M-%S.%f")
+    ontology_service.save("owl/output_" + today + ".owl")
