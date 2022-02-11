@@ -21,7 +21,7 @@ class OntologyService():
         except AttributeError as err:
             print(f"Warning! the foaf ontology is not imported in the local ontology: {err}")
 
-    def build_ontology(self: object, named_entity: NamedEntity):
+    def add_named_entity(self: object, named_entity: NamedEntity):
         """Build an ontology from a named entity"""
         if named_entity.type == NamedEntityTypeEnum.PERSON:
             with self._onto:
