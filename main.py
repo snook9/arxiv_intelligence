@@ -8,6 +8,7 @@ import sys
 import time
 from services.api.arxiv_api import ArxivApi
 from services.api.ner_api import NerApi
+from services.ontology.ontology_service import OntologyService
 
 if __name__ == '__main__':
 
@@ -26,10 +27,13 @@ if __name__ == '__main__':
     print("MSG:", message.message)
 
     if message.object_id != -1:
-        STATUS = None
-        while STATUS != "SUCCESS":
+        status = None
+        while status != "SUCCESS":
             time.sleep(2)
             document = ner_api.get_document_metadata(message.object_id)
-            STATUS = document.status
+            status = document.status
 
-    print(document.status)
+    ontology_service = OntologyService()
+    for named_entity in document.named_entities:
+        ontology_service.build_ontology(named_entity)
+    ontology_service.save("tmp/temp.owl")
