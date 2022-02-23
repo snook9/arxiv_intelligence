@@ -5,6 +5,7 @@ Highlighting the relationship between authors and scientists
 """
 
 import arxiv
+from entities.document import DocumentEntity
 from .arxiv_api_interface import ArxivApiInterface
 
 class ArxivApi(ArxivApiInterface):
@@ -13,7 +14,7 @@ class ArxivApi(ArxivApiInterface):
     def __init__(self: object, max_results: int = 10):
         self.max_results = max_results
 
-    def get_pdf(self: object):
+    def get_documents(self: object):
         """Returns the pdf list from arxiv web site"""
         search = arxiv.Search(
             # Only IA subject
@@ -22,9 +23,21 @@ class ArxivApi(ArxivApiInterface):
             sort_by = arxiv.SortCriterion.SubmittedDate
         )
 
-        pdf_list = []
+        documents = []
         for result in search.results():
-            #print("Categories:", result.categories)
-            pdf_list.append(result.pdf_url)
+            document = DocumentEntity()
+            document.entry_id = result.entry_id
+            document.updated = result.updated
+            document.published = result.published
+            document.title = result.title
+            document.authors = result.authors
+            document.summary = result.summary
+            document.comment = result.comment
+            document.journal_ref = result.journal_ref
+            document.doi = result.doi
+            document.primary_category = result.primary_category
+            document.categories = result.categories
+            document.pdf_url = result.pdf_url
+            documents.append(document)
 
-        return pdf_list
+        return documents

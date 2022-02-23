@@ -42,5 +42,4 @@ class NerApi(NerApiInterface):
         data = self._get(self.base_url, "document/metadata/" + str(document_id))
         if data is None:
             return None
-        #document = json.loads(data, object_hook=DocumentDecoder().to_object)
         return DocumentEntity.from_json(json.loads(data))
