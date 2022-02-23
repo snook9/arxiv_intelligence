@@ -10,7 +10,7 @@ from services.api.arxiv_api import ArxivApi
 def test_get_documents():
     """Test the PDF list from arxiv web site"""
     api = ArxivApi(1)
-    # We get all pdf
+    # We get a document
     documents = api.get_documents()
 
     for document in documents:
