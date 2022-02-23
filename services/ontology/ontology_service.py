@@ -21,8 +21,26 @@ class OntologyService():
         except AttributeError as err:
             print(f"Warning! the foaf ontology is not imported in the local ontology: {err}")
 
+    def add_authors(self: object, authors):
+        """Add an authors list to the ontology"""
+        for author in authors:
+            with self._onto:
+                author_object = self._onto.Author(author.name)
+                # We split the text after the first space
+                full_name = author.name.split(" ", 1)
+                try:
+                    # We suppose the first word is the first name
+                    author_object.firstName.append(full_name[0])
+                except IndexError:
+                    pass
+                try:
+                    # We rest is the last name
+                    author_object.lastName.append(full_name[1])
+                except IndexError:
+                    pass
+
     def add_named_entity(self: object, named_entity: NamedEntity):
-        """Build an ontology from a named entity"""
+        """Add a named entity to the ontology"""
         if named_entity.type == NamedEntityTypeEnum.PERSON:
             with self._onto:
                 person = self._foaf.Person(named_entity.text)

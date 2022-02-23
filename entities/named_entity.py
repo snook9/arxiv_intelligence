@@ -38,6 +38,13 @@ class NamedEntityTypeEnum(Enum):
     # Entities that don't fit into any of the other entity categories
     OTHER = "OTHER"
 
+class NamedEntityRelationshipEnum(Enum):
+    """Enum for the relationship a named entity"""
+    # The named entity is quoted in a document
+    QUOTED = "QUOTED"
+    # The named entity is referenced in a document
+    REFERENCED = "REFERENCED"
+
 class NamedEntity:
     """Named entity class"""
     text: str
@@ -47,6 +54,7 @@ class NamedEntity:
     type: NamedEntityTypeEnum
     begin_offset: int
     end_offset: int
+    relationship: NamedEntityRelationshipEnum
 
     @staticmethod
     def from_json(data):
@@ -61,4 +69,5 @@ class NamedEntity:
         obj.type = NamedEntityTypeEnum(data["type"])
         obj.begin_offset = data["begin_offset"]
         obj.end_offset = data["end_offset"]
+        obj.relationship = data["relationship"]
         return obj

@@ -71,6 +71,7 @@ if __name__ == '__main__':
 
             # Then, we add each named entity of the document
             # to the ontology
+            ontology_service.add_authors(document.authors)
             for named_entity in document.named_entities:
                 ontology_service.add_named_entity(named_entity)
 
