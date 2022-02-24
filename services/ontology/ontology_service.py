@@ -5,8 +5,8 @@ Highlighting the relationship between authors and scientists
 """
 
 from pathlib import Path
-from owlready2 import get_ontology
 from xml.sax.saxutils import escape
+from owlready2 import get_ontology
 from entities.named_entity import NamedEntity, NamedEntityTypeEnum
 
 class OntologyService():
