@@ -33,7 +33,6 @@ class OntologyService():
                 # We create the individual
                 author_object = self._onto.Author(author.name)
                 author_object.has_written.append(arxiv_document)
-                arxiv_document.has_as_author.append(author_object)
                 # We split the text after the first space
                 full_name = author.name.split(" ", 1)
                 try:
@@ -50,17 +49,31 @@ class OntologyService():
     def add_document(self: object, document: DocumentEntity):
         """Add an arxiv document to the ontology"""
         with self._onto:
-            entry_id = escape(document.entry_id)
+            if document.entry_id is not None:
+                entry_id = escape(document.entry_id)
+            else:
+                # If entry_id is not None, we return because entry_id is mandatory
+                return None
+            # Creating the onto object
             document_object = self._onto.ArxivDocument(entry_id)
+            # Adding all data properties
             document_object.entry_id.append(entry_id)
-            document_object.updated.append(escape(document.updated))
-            document_object.published.append(escape(document.published))
-            document_object.title.append(escape(document.title))
-            document_object.summary.append(escape(document.summary))
-            document_object.comment.append(escape(document.comment))
-            document_object.journal_ref.append(escape(document.journal_ref))
-            document_object.doi.append(escape(document.doi))
-            document_object.pdf_url.append(escape(document.pdf_url))
+            if document.updated is not None:
+                document_object.updated.append(escape(document.updated.strftime("%Y-%m-%dT%H:%M:%S")))
+            if document.published is not None:
+                document_object.published.append(escape(document.published.strftime("%Y-%m-%dT%H:%M:%S")))
+            if document.title is not None:
+                document_object.title.append(escape(document.title))
+            if document.summary is not None:
+                document_object.summary.append(escape(document.summary))
+            if document.comment is not None:
+                document_object.comment.append(escape(document.comment))
+            if document.journal_ref is not None:
+                document_object.journal_ref.append(escape(document.journal_ref))
+            if document.doi is not None:
+                document_object.doi.append(escape(document.doi))
+            if document.pdf_url is not None:
+                document_object.pdf_url.append(escape(document.pdf_url))
             self._add_authors(document.authors, document_object)
             return document_object
 
@@ -86,10 +99,8 @@ class OntologyService():
                     pass
                 if named_entity.relationship == NamedEntityRelationshipEnum.REFERENCED:
                     person.is_referenced.append(arxiv_document)
-                    arxiv_document.references.append(person)
                 else:
                     person.is_quoted.append(arxiv_document)
-                    arxiv_document.quotes.append(person)
 
                 return person
 
