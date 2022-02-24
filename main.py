@@ -28,7 +28,7 @@ if __name__ == '__main__':
         log_folder.mkdir()
     # Creating log config
     today = datetime.today().strftime("%Y-%m-%d-%H-%M-%S.%f")
-    logging.basicConfig(filename=log_folder.joinpath(today + ".log"), encoding='utf-8', level=logging.DEBUG)
+    logging.basicConfig(filename=log_folder.joinpath(today + ".log"), level=logging.DEBUG)
 
     # We retreive the PDF documents
     documents = ArxivApi(MAX_PDF_NUMBER).get_documents()
