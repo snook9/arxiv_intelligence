@@ -69,5 +69,5 @@ class NamedEntity:
         obj.type = NamedEntityTypeEnum(data["type"])
         obj.begin_offset = data["begin_offset"]
         obj.end_offset = data["end_offset"]
-        obj.relationship = data["relationship"]
+        obj.relationship = NamedEntityRelationshipEnum(data["relationship"])
         return obj

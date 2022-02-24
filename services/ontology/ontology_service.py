@@ -8,6 +8,8 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 from owlready2 import get_ontology
 from entities.named_entity import NamedEntity, NamedEntityTypeEnum
+from entities.named_entity import NamedEntityRelationshipEnum
+from entities.document import DocumentEntity
 
 class OntologyService():
     """Ontology service"""
@@ -22,7 +24,7 @@ class OntologyService():
         except AttributeError as err:
             print(f"Warning! the foaf ontology is not imported in the local ontology: {err}")
 
-    def add_authors(self: object, authors):
+    def _add_authors(self: object, authors, arxiv_document):
         """Add an authors list to the ontology"""
         for author in authors:
             with self._onto:
@@ -30,6 +32,8 @@ class OntologyService():
                 author.name = escape(author.name)
                 # We create the individual
                 author_object = self._onto.Author(author.name)
+                author_object.has_written.append(arxiv_document)
+                arxiv_document.has_as_author.append(author_object)
                 # We split the text after the first space
                 full_name = author.name.split(" ", 1)
                 try:
@@ -43,7 +47,24 @@ class OntologyService():
                 except IndexError:
                     pass
 
-    def add_named_entity(self: object, named_entity: NamedEntity):
+    def add_document(self: object, document: DocumentEntity):
+        """Add an arxiv document to the ontology"""
+        with self._onto:
+            entry_id = escape(document.entry_id)
+            document_object = self._onto.ArxivDocument(entry_id)
+            document_object.entry_id.append(entry_id)
+            document_object.updated.append(escape(document.updated))
+            document_object.published.append(escape(document.published))
+            document_object.title.append(escape(document.title))
+            document_object.summary.append(escape(document.summary))
+            document_object.comment.append(escape(document.comment))
+            document_object.journal_ref.append(escape(document.journal_ref))
+            document_object.doi.append(escape(document.doi))
+            document_object.pdf_url.append(escape(document.pdf_url))
+            self._add_authors(document.authors, document_object)
+            return document_object
+
+    def add_named_entity(self: object, named_entity: NamedEntity, arxiv_document):
         """Add a named entity to the ontology"""
         if named_entity.type == NamedEntityTypeEnum.PERSON:
             with self._onto:
@@ -63,6 +84,13 @@ class OntologyService():
                     person.lastName.append(full_name[1])
                 except IndexError:
                     pass
+                if named_entity.relationship == NamedEntityRelationshipEnum.REFERENCED:
+                    person.is_referenced.append(arxiv_document)
+                    arxiv_document.references.append(person)
+                else:
+                    person.is_quoted.append(arxiv_document)
+                    arxiv_document.quotes.append(person)
+
                 return person
 
         # Else, we return none
