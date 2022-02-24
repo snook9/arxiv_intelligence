@@ -6,6 +6,7 @@ Highlighting the relationship between authors and scientists
 
 from pathlib import Path
 from owlready2 import get_ontology
+from xml.sax.saxutils import escape
 from entities.named_entity import NamedEntity, NamedEntityTypeEnum
 
 class OntologyService():
@@ -25,6 +26,9 @@ class OntologyService():
         """Add an authors list to the ontology"""
         for author in authors:
             with self._onto:
+                # We escape XML character data
+                author.name = escape(author.name)
+                # We create the individual
                 author_object = self._onto.Author(author.name)
                 # We split the text after the first space
                 full_name = author.name.split(" ", 1)
@@ -43,6 +47,9 @@ class OntologyService():
         """Add a named entity to the ontology"""
         if named_entity.type == NamedEntityTypeEnum.PERSON:
             with self._onto:
+                # We escape XML character data
+                named_entity.text = escape(named_entity.text)
+                # We create the individual
                 person = self._foaf.Person(named_entity.text)
                 # We split the text after the first space
                 full_name = named_entity.text.split(" ", 1)
