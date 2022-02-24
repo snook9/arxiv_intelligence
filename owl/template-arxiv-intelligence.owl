@@ -121,15 +121,6 @@
     
 
 
-    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#category_symbol -->
-
-    <owl:DatatypeProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#category_symbol">
-        <rdfs:domain rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocumentCategory"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-    </owl:DatatypeProperty>
-    
-
-
     <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#category_title -->
 
     <owl:DatatypeProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#category_title">
@@ -256,25 +247,6 @@
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
     </owl:Class>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // General axioms
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
-            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocumentCategory"/>
-            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
-        </owl:members>
-    </rdf:Description>
 </rdf:RDF>
 
 

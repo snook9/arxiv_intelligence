@@ -46,6 +46,23 @@ class OntologyService():
                 except IndexError:
                     pass
 
+    def _add_primary_category(self: object, category, arxiv_document):
+        """Add a primary category to the ontology"""
+        with self._onto:
+            category = escape(category)
+            category_object = self._onto.ArxivDocumentCategory(category)
+            category_object.title.append(category)
+            arxiv_document.has_as_primary_category.append(category_object)
+
+    def _add_categories(self: object, categories, arxiv_document):
+        """Add categories to the ontology"""
+        for category in categories:
+            with self._onto:
+                category = escape(category)
+                category_object = self._onto.ArxivDocumentCategory(category)
+                category_object.title.append(category)
+                arxiv_document.has_as_category.append(category_object)
+
     def add_document(self: object, document: DocumentEntity):
         """Add an arxiv document to the ontology"""
         with self._onto:
@@ -75,6 +92,8 @@ class OntologyService():
             if document.pdf_url is not None:
                 document_object.pdf_url.append(escape(document.pdf_url))
             self._add_authors(document.authors, document_object)
+            self._add_primary_category(document.primary_category, document_object)
+            self._add_categories(document.categories, document_object)
             return document_object
 
     def add_named_entity(self: object, named_entity: NamedEntity, arxiv_document):
