@@ -37,6 +37,9 @@ class OntologyService():
         text = text.replace('', '')
         text = text.replace('', '')
         text = text.replace('', '')
+        text = text.replace('', '')
+        text = text.replace('𝒜', '')
+        text = text.replace('𝐸', '')
         return text
 
     def _escape_iri(self: object, text: str) -> str:
