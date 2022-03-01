@@ -87,7 +87,7 @@ class DocumentEntity:
             obj.categories = data["categories"]
         except KeyError:
             pass
-        try: 
+        try:
             obj.pdf_url = data["pdf_url"]
         except KeyError:
             pass

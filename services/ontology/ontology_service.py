@@ -23,11 +23,12 @@ class OntologyService():
             self._foaf = self._onto.get_imported_ontologies().first().load()
         except AttributeError as err:
             print(f"Warning! the foaf ontology is not imported in the local ontology: {err}")
-    
-    def _escape_value(self: object, text: str) -> str:
+
+    @staticmethod
+    def _escape_value(text: str) -> str:
         """Escape the illegal characters for an ontology property"""
         if text is None:
-            return
+            return None
         # function to escape XML character data
         text = escape(text)
         text = text.replace('|', '')
@@ -42,11 +43,12 @@ class OntologyService():
         text = text.replace('𝐸', '')
         return text
 
-    def _escape_iri(self: object, text: str) -> str:
+    @staticmethod
+    def _escape_iri(text: str) -> str:
         """For IRI, we replace space character by _"""
         if text is None:
-            return
-        text = self._escape_value(text)
+            return None
+        text = OntologyService._escape_value(text)
         text = text.replace(' ', '_')
         return text
 
@@ -96,9 +98,13 @@ class OntologyService():
             # Adding all data properties
             document_object.entry_id.append(self._escape_value(document.entry_id))
             if document.updated is not None:
-                document_object.updated.append(self._escape_value(document.updated.strftime("%Y-%m-%dT%H:%M:%S")))
+                document_object.updated.append(
+                    self._escape_value(document.updated.strftime("%Y-%m-%dT%H:%M:%S"))
+                    )
             if document.published is not None:
-                document_object.published.append(self._escape_value(document.published.strftime("%Y-%m-%dT%H:%M:%S")))
+                document_object.published.append(
+                    self._escape_value(document.published.strftime("%Y-%m-%dT%H:%M:%S"))
+                    )
             if document.title is not None:
                 document_object.title.append(self._escape_value(document.title))
             if document.summary is not None:

@@ -34,7 +34,7 @@ pylint:
   stage: Static Analysis
   allow_failure: true
   script:
-  - pylint --disable too-few-public-methods ./main.py ./services ./tests
+  - pylint --disable too-few-public-methods --disable too-many-instance-attributes ./main.py ./services ./entities ./tests
 
 pytest:
   stage: Test
