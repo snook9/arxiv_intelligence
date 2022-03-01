@@ -24,4 +24,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --disable too-few-public-methods ./main.py ./services ./tests
+        pylint --disable too-few-public-methods --disable too-many-instance-attributes --disable too-many-branches --disable too-many-statements ./main.py ./services ./entities ./tests

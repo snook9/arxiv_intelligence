@@ -9,10 +9,28 @@
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:foaf="http://xmlns.com/foaf/0.1/"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:template-arxiv-intelligence="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#">
     <owl:Ontology rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence">
         <owl:imports rdf:resource="http://xmlns.com/foaf/spec/index.rdf"/>
     </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#DASE_RULE -->
+
+    <owl:AnnotationProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#DASE_RULE"/>
     
 
 
@@ -24,6 +42,52 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#author_quotes -->
+
+    <owl:ObjectProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#author_quotes">
+        <owl:inverseOf rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_quoted_by_author"/>
+        <rdfs:domain rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#has_written"/>
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#quotes"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#author_quotes"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#propertyChainAxiom"/>
+        <owl:annotatedTarget rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#has_written"/>
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#quotes"/>
+        </owl:annotatedTarget>
+        <DASE_RULE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">R1___quotes(?document, ?person) has_written(?author, ?document) -&gt; author_quotes(?author, ?person)___If a document quotes a person and an author has written the document, then the author quotes the person</DASE_RULE>
+    </owl:Axiom>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#author_references -->
+
+    <owl:ObjectProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#author_references">
+        <owl:inverseOf rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_referenced_by_author"/>
+        <rdfs:domain rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#has_written"/>
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#references"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#author_references"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#propertyChainAxiom"/>
+        <owl:annotatedTarget rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#has_written"/>
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#references"/>
+        </owl:annotatedTarget>
+        <DASE_RULE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">R2___references(?document, ?person) has_written(?author, ?document) -&gt; author_references(?author, ?person)___If a document references a person and an author has written the document, then the author references the person</DASE_RULE>
+    </owl:Axiom>
     
 
 
@@ -84,11 +148,23 @@
     
 
 
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_quoted_by_author -->
+
+    <owl:ObjectProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_quoted_by_author"/>
+    
+
+
     <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_referenced -->
 
     <owl:ObjectProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_referenced">
         <owl:inverseOf rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#references"/>
     </owl:ObjectProperty>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_referenced_by_author -->
+
+    <owl:ObjectProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#is_referenced_by_author"/>
     
 
 
@@ -118,15 +194,6 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
-
-
-    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#category_symbol -->
-
-    <owl:DatatypeProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#category_symbol">
-        <rdfs:domain rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocumentCategory"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-    </owl:DatatypeProperty>
     
 
 
@@ -188,7 +255,7 @@
 
     <owl:DatatypeProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#published">
         <rdfs:domain rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     </owl:DatatypeProperty>
     
 
@@ -215,7 +282,7 @@
 
     <owl:DatatypeProperty rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#updated">
         <rdfs:domain rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     </owl:DatatypeProperty>
     
 
@@ -256,25 +323,6 @@
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
     </owl:Class>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // General axioms
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
-            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocumentCategory"/>
-            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
-        </owl:members>
-    </rdf:Description>
 </rdf:RDF>
 
 
