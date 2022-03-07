@@ -13,6 +13,7 @@ from datetime import datetime
 from progress.bar import IncrementalBar
 from services.api.arxiv_api import ArxivApi
 from services.api.ner_api import NerApi
+from services.hdfs.hdfs_service import HdfsService
 from services.ontology.ontology_service import OntologyService
 
 PROGRAM_NAME = "arXiv Intelligence"
@@ -35,13 +36,15 @@ def print_help(script_name: str):
                        'default value is http://localhost:5000/\n'
                        '\t-n | --number=[value]\t: '
                        'set the max articles number extracted from arxiv.org\n'
-                       'default value is 1')
+                       'default value is 2\n'
+                       '\t-d | --hdfs\t\t: enable writing to HDFS for Hadoop project\n'
+                       'default disabled')
 
 def parse_opt(script_name: str, argv):
     """Parse options from CLI"""
-    options = {"webservice": "http://localhost:5000/", "number": 2}
+    options = {"webservice": "http://localhost:5000/", "number": 2, "hdfs": False}
     try:
-        opts, _ = getopt.getopt(argv, "hvw:n:", ["help", "version", "webservice=", "number="])
+        opts, _ = getopt.getopt(argv, "hvw:n:d", ["help", "version", "webservice=", "number=", "hdfs"])
     except getopt.GetoptError:
         print_help(script_name)
         sys.exit(2)
@@ -56,6 +59,8 @@ def parse_opt(script_name: str, argv):
             options["webservice"] = arg
         elif opt in ("-n", "--number"):
             options["number"] = int(arg)
+        elif opt in ("-d", "--hdfs"):
+            options["hdfs"] = True
 
     return options
 
@@ -128,3 +133,15 @@ if __name__ == '__main__':
     progress_bar.finish()
     print("The ontology '" + filename + "' has been saved!")
     logging.info("The ontology '%s' has been saved!", filename)
+
+    # If HDFS is enabled
+    if cli_options["hdfs"] is True:
+        # Writing to HDFS (for Hadoop project)
+        hdfs_service = HdfsService()
+        csv_file = "documents_" + today + ".csv"
+        hdfs_service.write_documents(csv_file, documents)
+        print("The file '" + csv_file + 
+              "' has been saved to the following HDFS folder '" + 
+              str(hdfs_service.folder) + "'")
+        logging.info("The file '%s' has been saved to the following HDFS folder '%s'", 
+                     csv_file, str(hdfs_service.folder))
