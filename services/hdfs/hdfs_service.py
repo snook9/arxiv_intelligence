@@ -30,7 +30,7 @@ class HdfsService():
                     str(self.folder.joinpath(csv_filename)), encoding="utf-8"
                 ) as csv_file:
 
-                fieldnames = ["entry_id", "updated", "published", "title", "authors", 
+                fieldnames = ["entry_id", "updated", "published", "title", "authors",
                               "summary", "comment", "journal_ref", "doi", "primary_category",
                               "categories", "pdf_url", "number_of_pages", "raw_info"]
                 writer = csv.DictWriter(csv_file, delimiter=';', fieldnames=fieldnames)

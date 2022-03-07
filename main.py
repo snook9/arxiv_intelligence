@@ -44,7 +44,9 @@ def parse_opt(script_name: str, argv):
     """Parse options from CLI"""
     options = {"webservice": "http://localhost:5000/", "number": 2, "hdfs": False}
     try:
-        opts, _ = getopt.getopt(argv, "hvw:n:d", ["help", "version", "webservice=", "number=", "hdfs"])
+        opts, _ = getopt.getopt(
+            argv, "hvw:n:d",
+            ["help", "version", "webservice=", "number=", "hdfs"])
     except getopt.GetoptError:
         print_help(script_name)
         sys.exit(2)
@@ -140,8 +142,8 @@ if __name__ == '__main__':
         hdfs_service = HdfsService()
         csv_file = "documents_" + today + ".csv"
         hdfs_service.write_documents(csv_file, documents)
-        print("The file '" + csv_file + 
-              "' has been saved to the following HDFS folder '" + 
+        print("The file '" + csv_file +
+              "' has been saved to the following HDFS folder '" +
               str(hdfs_service.folder) + "'")
-        logging.info("The file '%s' has been saved to the following HDFS folder '%s'", 
+        logging.info("The file '%s' has been saved to the following HDFS folder '%s'",
                      csv_file, str(hdfs_service.folder))
