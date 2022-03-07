@@ -35,7 +35,7 @@ def print_help(script_name: str):
 
 def parse_opt(script_name: str, argv):
     """Parse options from CLI"""
-    options = {"webservice": "http://localhost:5000/", "number": 1}
+    options = {"webservice": "http://localhost:5000/", "number": 2}
     try:
         opts, _ = getopt.getopt(argv, "hvw:n:", ["help", "version", "webservice=", "number="])
     except getopt.GetoptError:
@@ -117,10 +117,10 @@ if __name__ == '__main__':
             logging.info("ID: %s | named entities added to the ontology", document.object_id)
             progress_bar.next()
 
-    progress_bar.finish()
+            # At the end of the PDF
+            # We write the ontology in a folder
+            filename = ontology_service.save("owl")
 
-    # At the end of the PDF list
-    # We write the ontology in a folder
-    filename = ontology_service.save("owl")
+    progress_bar.finish()
     print("The ontology '" + filename + "' has been saved!")
     logging.info("The ontology '%s' has been saved!", filename)
