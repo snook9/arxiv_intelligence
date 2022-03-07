@@ -20,7 +20,7 @@ class OntologyService():
         try:
             self._foaf = self._onto.get_imported_ontologies().first().load()
         except AttributeError as err:
-            print(f"Warning! the foaf ontology is not imported in the local ontology: {err}") 
+            print(f"Warning! the foaf ontology is not imported in the local ontology: {err}")
         today = datetime.today().strftime("%Y-%m-%d-%H-%M-%S.%f")
         self._filename = "output_" + today + ".owl"
 

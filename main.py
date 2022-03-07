@@ -21,16 +21,20 @@ PROGRAM_VERSION = "0.0.1"
 def print_help(script_name: str):
     """Show the software CLI help"""
     print(script_name, '[options]\n'
-                       'This software highlights the relationships between authors and scientists, from articles published on arxiv.org.'
-                       'For this, it generates an ontology (owl file), from the named entities located in the articles.\n'
+                       'This software highlights the relationships between authors and scientists, '
+                       'from articles published on arxiv.org.'
+                       'For this, it generates an ontology (owl file), '
+                       'from the named entities located in the articles.\n'
                        'After execution, the owl file is generated in the owl folder.\n'
                        'The category is fixed to cs.AI.\n'
                        '\t-h | --help\t\t\t: show this help\n'
                        '\t-v | --version\t\t\t: show the version of this software\n'
                        '\t-w | --webservice=[url]\t: set the url of the named entities web service '
-                       '(you must use an instance of the following web service: https://github.com/snook9/arxiv_intelligence_ner_ws)\n'
+                       '(you must use an instance of the following web service: '
+                       'https://github.com/snook9/arxiv_intelligence_ner_ws)\n'
                        'default value is http://localhost:5000/\n'
-                       '\t-n | --number=[value]\t: set the max articles number extracted from arxiv.org\n'
+                       '\t-n | --number=[value]\t: '
+                       'set the max articles number extracted from arxiv.org\n'
                        'default value is 1')
 
 def parse_opt(script_name: str, argv):
