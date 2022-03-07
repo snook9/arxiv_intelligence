@@ -121,7 +121,6 @@ if __name__ == '__main__':
 
     # At the end of the PDF list
     # We write the ontology in a folder
-    filepath = "owl/output_" + today + ".owl"
-    ontology_service.save(filepath)
-    print("The ontology '" + filepath + "' has been saved!")
-    logging.info("The ontology '%s' has been saved!", filepath)
+    filename = ontology_service.save("owl")
+    print("The ontology '" + filename + "' has been saved!")
+    logging.info("The ontology '%s' has been saved!", filename)

@@ -5,6 +5,7 @@ Highlighting the relationship between authors and scientists
 """
 
 from pathlib import Path
+from datetime import datetime
 from xml.sax.saxutils import escape
 from owlready2 import get_ontology
 from entities.named_entity import NamedEntity, NamedEntityTypeEnum
@@ -16,13 +17,12 @@ class OntologyService():
 
     def __init__(self: object):
         self._onto = get_ontology("file://owl/template-arxiv-intelligence.owl").load()
-        #self._foaf = get_namespace("http://xmlns.com/foaf/0.1/")
-        #self._foaf = get_ontology("http://xmlns.com/foaf/spec/index.rdf").load()
-
         try:
             self._foaf = self._onto.get_imported_ontologies().first().load()
         except AttributeError as err:
-            print(f"Warning! the foaf ontology is not imported in the local ontology: {err}")
+            print(f"Warning! the foaf ontology is not imported in the local ontology: {err}") 
+        today = datetime.today().strftime("%Y-%m-%d-%H-%M-%S.%f")
+        self._filename = "output_" + today + ".owl"
 
     @staticmethod
     def _escape_value(text: str) -> str:
@@ -150,6 +150,7 @@ class OntologyService():
         # Else, we return none
         return None
 
-    def save(self: object, filepath: Path):
+    def save(self: object, folder: str):
         """Save the current ontology built in an OWL file"""
-        self._onto.save(filepath)
+        self._onto.save(str(Path().joinpath(folder, self._filename)))
+        return self._filename
