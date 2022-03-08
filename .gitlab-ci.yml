@@ -17,6 +17,7 @@ cache:
 
 before_script:
   - apt-get update -q -y
+  - apt-get install gcc python-dev libkrb5-dev python-docopt python3-gssapi
   - python --version
   - pip install virtualenv
   - virtualenv venv
