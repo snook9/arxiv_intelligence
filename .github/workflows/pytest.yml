@@ -26,6 +26,8 @@ jobs:
           python-version: 3.9
       - name: Install dependencies
         run: |
+          sudo apt-get update -q -y
+          sudo apt-get install gcc python-dev libkrb5-dev python-docopt python3-gssapi
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Testing the code with pytest
