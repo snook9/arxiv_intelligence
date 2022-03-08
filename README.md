@@ -9,6 +9,10 @@ Highlighting the relationship between authors and scientists.
 First, you must install the following NER (Named Entity Recognition) Web service:
 https://github.com/snook9/arxiv_intelligence_ner_ws
 
+### Debian, Ubuntu, and friends
+
+    sudo apt install gcc python-dev libkrb5-dev python-docopt python3-gssapi
+
 ## Application
 
 Create a virtual environment and activate it:
