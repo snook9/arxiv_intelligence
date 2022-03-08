@@ -346,6 +346,144 @@
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_1 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_1">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
+        <has_written rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_2 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_2">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
+        <has_written rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_3 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_3">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
+        <has_written rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_3"/>
+        <has_written rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_4"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_4 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_author_4">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#Author"/>
+        <has_written rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_4"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_1 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_1">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
+        <quotes rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_1"/>
+        <quotes rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_5"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_2 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_2">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
+        <references rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_2"/>
+        <references rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_6"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_3 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_3">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
+        <quotes rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_3"/>
+        <references rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_4"/>
+        <references rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_5"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_4 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_4">
+        <rdf:type rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#ArxivDocument"/>
+        <quotes rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_3"/>
+        <quotes rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_6"/>
+        <references rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_4"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_1 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_1">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_2 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_2">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_3 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_3">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_4 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_4">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_5 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_5">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_6 -->
+
+    <owl:NamedIndividual rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_person_6">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // Rules
     //
     ///////////////////////////////////////////////////////////////////////////////////////
