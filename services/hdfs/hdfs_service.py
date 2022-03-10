@@ -37,19 +37,19 @@ class HdfsService():
 
                 writer.writeheader()
                 for document in documents:
-                    writer.writerow({"entry_id": document.entry_id,
-                                     "updated": document.updated,
-                                     "published": document.published,
-                                     "title": document.title,
-                                     "authors": document.authors,
-                                     "summary": document.summary,
-                                     "comment": document.comment,
-                                     "journal_ref": document.journal_ref,
-                                     "doi": document.doi,
-                                     "primary_category": document.primary_category,
-                                     "categories": document.categories,
-                                     "pdf_url": document.pdf_url,
-                                     "number_of_pages": document.number_of_pages,
-                                     "raw_info": document.raw_info})
+                    writer.writerow({"entry_id": "|" + str(document.entry_id) + "|",
+                                     "updated": "|" + document.updated.strftime("%Y-%m-%dT%H:%M:%S") + "|",
+                                     "published": "|" + document.published.strftime("%Y-%m-%dT%H:%M:%S") + "|",
+                                     "title": "|" + str(document.title).replace("\n", " ") + "|",
+                                     "authors": "|" + ', '.join(str(author.name) for author in document.authors) + "|",
+                                     "summary": "|" + str(document.summary).replace("\n", " ") + "|",
+                                     "comment": "|" + str(document.comment).replace("\n", " ") + "|",
+                                     "journal_ref": "|" + str(document.journal_ref).replace("\n", " ") + "|",
+                                     "doi": "|" + str(document.doi).replace("\n", " ") + "|",
+                                     "primary_category": "|" + str(document.primary_category) + "|",
+                                     "categories": "|" + ', '.join(str(category) for category in document.categories) + "|",
+                                     "pdf_url": "|" + str(document.pdf_url) + "|",
+                                     "number_of_pages": "|" + str(document.number_of_pages) + "|",
+                                     "raw_info": "|" + str(document.raw_info).replace("\n", " ") + "|"})
         except HdfsError as err:
             print(f"HdfsError: {err}")
