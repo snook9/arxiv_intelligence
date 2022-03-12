@@ -9,20 +9,16 @@ CREATE EXTERNAL TABLE cs_2022_spring_1.cassaing_project (
   title STRING,
   authors STRING,
   summary STRING,
-  comment STRING,
-  journal_ref STRING,
-  doi STRING,
   primary_category STRING,
   categories STRING,
   pdf_url STRING,
-  number_of_pages INT,
-  raw_info STRING
+  number_of_pages INT
 )
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
 WITH SERDEPROPERTIES (
    "separatorChar" = ";",
-   "quoteChar"     = "'",
-   "escapeChar"    = "|"
+   "quoteChar"     = "'"
+--   "escapeChar"    = "\"
 )
 STORED AS TEXTFILE
 LOCATION '/education/cs_2022_spring_1/j.cassaing-cs/project/'
