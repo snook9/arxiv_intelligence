@@ -31,25 +31,22 @@ class HdfsService():
                 ) as csv_file:
 
                 fieldnames = ["entry_id", "updated", "published", "title", "authors",
-                              "summary", "comment", "journal_ref", "doi", "primary_category",
-                              "categories", "pdf_url", "number_of_pages", "raw_info"]
+                              "summary", "primary_category",
+                              "categories", "pdf_url", "number_of_pages"]
                 writer = csv.DictWriter(csv_file, delimiter=';', fieldnames=fieldnames)
 
                 writer.writeheader()
                 for document in documents:
-                    writer.writerow({"entry_id": "|" + str(document.entry_id) + "|",
-                                     "updated": "|" + document.updated.strftime("%Y-%m-%dT%H:%M:%S") + "|",
-                                     "published": "|" + document.published.strftime("%Y-%m-%dT%H:%M:%S") + "|",
-                                     "title": "|" + str(document.title).replace("\n", " ") + "|",
-                                     "authors": "|" + ', '.join(str(author.name) for author in document.authors) + "|",
-                                     "summary": "|" + str(document.summary).replace("\n", " ") + "|",
-                                     "comment": "|" + str(document.comment).replace("\n", " ") + "|",
-                                     "journal_ref": "|" + str(document.journal_ref).replace("\n", " ") + "|",
-                                     "doi": "|" + str(document.doi).replace("\n", " ") + "|",
-                                     "primary_category": "|" + str(document.primary_category) + "|",
-                                     "categories": "|" + ', '.join(str(category) for category in document.categories) + "|",
-                                     "pdf_url": "|" + str(document.pdf_url) + "|",
-                                     "number_of_pages": "|" + str(document.number_of_pages) + "|",
-                                     "raw_info": "|" + str(document.raw_info).replace("\n", " ") + "|"})
+                    writer.writerow({"entry_id": "\'" + str(document.entry_id).replace("\'", " ") + "\'",
+                                     "updated": "\'" + document.updated.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
+                                     "published": "\'" + document.published.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
+                                     "title": "\'" + str(document.title).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
+                                     "authors": "\'" + ', '.join(str(author.name) for author in document.authors) + "\'",
+                                     "summary": "\'" + str(document.summary).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
+                                     "primary_category": "\'" + str(document.primary_category).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
+                                     "categories": "\'" + ', '.join(str(category).replace("\n", " ").replace(";", ":").replace("\'", " ") for category in document.categories) + "\'",
+                                     "pdf_url": "\'" + str(document.pdf_url).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
+                                     "number_of_pages": document.number_of_pages})
         except HdfsError as err:
             print(f"HdfsError: {err}")
+
