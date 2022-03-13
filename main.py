@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from progress.bar import IncrementalBar
+from hdfs.util import HdfsError
 from services.api.arxiv_api import ArxivApi
 from services.api.ner_api import NerApi
 from services.hdfs.hdfs_service import HdfsService
@@ -140,17 +141,25 @@ if __name__ == '__main__':
             progress_bar.next()
 
     progress_bar.finish()
-    print("The ontology '" + filename + "' has been saved!")
-    logging.info("The ontology '%s' has been saved!", filename)
+
+    try:
+        print("The ontology '" + filename + "' has been saved!")
+        logging.info("The ontology '%s' has been saved!", filename)
+    except NameError:
+        pass
 
     # If HDFS is enabled
     if cli_options["hdfs"] is True:
         # Writing to HDFS (for Hadoop project)
         hdfs_service = HdfsService()
         csv_file = "documents_" + today + ".csv"
-        hdfs_service.write_documents(csv_file, documents)
-        print("The file '" + csv_file +
-              "' has been saved to the following HDFS folder '" +
-              str(hdfs_service.folder) + "'")
-        logging.info("The file '%s' has been saved to the following HDFS folder '%s'",
-                     csv_file, str(hdfs_service.folder))
+        try:
+            hdfs_service.write_documents(csv_file, documents)
+            print("The file '" + csv_file +
+                  "' has been saved to the following HDFS folder '" +
+                  str(hdfs_service.folder) + "'")
+            logging.info("The file '%s' has been saved to the following HDFS folder '%s'",
+	                     csv_file, str(hdfs_service.folder))
+        except HdfsError as err:
+            print(f"HdfsError: {err}")
+            logging.error("HdfsError: '%s'", err)
