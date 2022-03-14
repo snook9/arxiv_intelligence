@@ -18,7 +18,7 @@ from services.hdfs.hdfs_service import HdfsService
 from services.ontology.ontology_service import OntologyService
 
 PROGRAM_NAME = "arXiv Intelligence"
-PROGRAM_VERSION = "0.0.1"
+PROGRAM_VERSION = "0.9.0"
 
 def print_help(script_name: str):
     """Show the software CLI help"""
