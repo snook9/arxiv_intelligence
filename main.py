@@ -121,11 +121,12 @@ if __name__ == '__main__':
                 document.status = document_metadata.status
 
             if document.status == "ERROR":
-                logging.error("ID: %s | error when extracting named entities of the document '%s'", document.object_id, document.entry_id)
+                logging.error("ID: %s | error when extracting named entities of the document '%s'",
+                              document.object_id, document.entry_id)
                 progress_bar.next()
                 # Due to error, we skip to the next element of the loop
                 continue
-            
+
             logging.info("ID: %s | named entities retrieved", document.object_id)
 
             # Then, we add each named entity of the document

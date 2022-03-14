@@ -484,6 +484,26 @@
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_1"/>
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_2"/>
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_3"/>
+            <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#the_doc_4"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // Rules
     //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -497,6 +517,64 @@
     </rdf:Description>
     <rdf:Description rdf:about="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document2">
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">If a document quotes a person and another document quotes this same person, then this person is an influential person</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S1</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#quotes"/>
+                        <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document1"/>
+                        <swrl:argument2 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#person"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#quotes"/>
+                                <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document2"/>
+                                <swrl:argument2 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#person"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+                                        <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document1"/>
+                                        <swrl:argument2 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document2"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#InfluentialPerson"/>
+                        <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#person"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
@@ -637,64 +715,6 @@
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
                                 <swrl:propertyPredicate rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#references"/>
-                                <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document2"/>
-                                <swrl:argument2 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#person"/>
-                            </rdf:Description>
-                        </rdf:first>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
-                                        <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document1"/>
-                                        <swrl:argument2 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document2"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                            </rdf:Description>
-                        </rdf:rest>
-                    </rdf:Description>
-                </rdf:rest>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                        <swrl:classPredicate rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#InfluentialPerson"/>
-                        <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#person"/>
-                    </rdf:Description>
-                </rdf:first>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-            </rdf:Description>
-        </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
-        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">If a document quotes a person and another document quotes this same person, then this person is an influential person</rdfs:comment>
-        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S1</rdfs:label>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#quotes"/>
-                        <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document1"/>
-                        <swrl:argument2 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#person"/>
-                    </rdf:Description>
-                </rdf:first>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#quotes"/>
                                 <swrl:argument1 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#document2"/>
                                 <swrl:argument2 rdf:resource="http://arxiv.hereyougo.fr/ontology/template-arxiv-intelligence#person"/>
                             </rdf:Description>

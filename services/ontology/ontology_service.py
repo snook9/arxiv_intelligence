@@ -7,7 +7,7 @@ Highlighting the relationship between authors and scientists
 from pathlib import Path
 from datetime import datetime
 from xml.sax.saxutils import escape
-from owlready2 import get_ontology
+from owlready2 import get_ontology, AllDifferent
 from entities.named_entity import NamedEntity, NamedEntityTypeEnum
 from entities.named_entity import NamedEntityRelationshipEnum
 from entities.document import DocumentEntity
@@ -152,5 +152,8 @@ class OntologyService():
 
     def save(self: object, folder: str):
         """Save the current ontology built in an OWL file"""
+        # Before to save the ontology, we make sure that all documents are differents
+        AllDifferent(self._foaf.Document.instances())
+
         self._onto.save(str(Path().joinpath(folder, self._filename)))
         return self._filename
