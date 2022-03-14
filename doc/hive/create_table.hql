@@ -4,8 +4,8 @@
 -- Create a table
 CREATE EXTERNAL TABLE cs_2022_spring_1.cassaing_project (
   entry_id STRING,
-  updated STRING,
-  published STRING,
+  updated DATE,
+  published DATE,
   title STRING,
   authors STRING,
   summary STRING,
