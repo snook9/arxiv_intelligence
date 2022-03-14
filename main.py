@@ -11,13 +11,14 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from progress.bar import IncrementalBar
+from hdfs.util import HdfsError
 from services.api.arxiv_api import ArxivApi
 from services.api.ner_api import NerApi
 from services.hdfs.hdfs_service import HdfsService
 from services.ontology.ontology_service import OntologyService
 
 PROGRAM_NAME = "arXiv Intelligence"
-PROGRAM_VERSION = "0.0.1"
+PROGRAM_VERSION = "0.9.0"
 
 def print_help(script_name: str):
     """Show the software CLI help"""
@@ -28,8 +29,8 @@ def print_help(script_name: str):
                        'from the named entities located in the articles.\n'
                        'After execution, the owl file is generated in the owl folder.\n'
                        'The category is fixed to cs.AI.\n'
-                       '\t-h | --help\t\t\t: show this help\n'
-                       '\t-v | --version\t\t\t: show the version of this software\n'
+                       '\t-h | --help\t\t: show this help\n'
+                       '\t-v | --version\t\t: show the version of this software\n'
                        '\t-w | --webservice=[url]\t: set the url of the named entities web service '
                        '(you must use an instance of the following web service: '
                        'https://github.com/snook9/arxiv_intelligence_ner_ws)\n'
@@ -37,8 +38,8 @@ def print_help(script_name: str):
                        '\t-n | --number=[value]\t: '
                        'set the max articles number extracted from arxiv.org\n'
                        'default value is 2\n'
-                       '\t-d | --hdfs\t\t: enable writing to HDFS for Hadoop project\n'
-                       'default disabled')
+                       '\t-d | --hdfs\t\t: enable writing to HDFS for big data projects\n'
+                       'default disabled. Nota: HDFS server URL is hardcoded currently')
 
 def parse_opt(script_name: str, argv):
     """Parse options from CLI"""
@@ -79,6 +80,7 @@ if __name__ == '__main__':
     # Creating log config
     today = datetime.today().strftime("%Y-%m-%d-%H-%M-%S.%f")
     logging.basicConfig(filename=log_folder.joinpath(today + ".log"), level=logging.DEBUG)
+    print("Events are logged in the folder:", log_folder)
 
     # We retreive the PDF documents
     documents = ArxivApi(cli_options["number"]).get_documents()
@@ -106,9 +108,11 @@ if __name__ == '__main__':
         if message.object_id != -1:
             # Here, all it's ok, so we save the object id
             document.object_id = message.object_id
+            # We force the status to pending for the while loop
+            document.status = "PENDING"
             # We get the metadata of the PDF
             # As the process is async, we try the request several times
-            while document.status != "SUCCESS":
+            while document.status == "PENDING":
                 time.sleep(2)
                 document_metadata = ner_api.get_document_metadata(document.object_id)
                 # We keep the metadata
@@ -116,6 +120,13 @@ if __name__ == '__main__':
                 document.raw_info = document_metadata.raw_info
                 document.named_entities = document_metadata.named_entities
                 document.status = document_metadata.status
+
+            if document.status == "ERROR":
+                logging.error("ID: %s | error when extracting named entities of the document '%s'",
+                              document.object_id, document.entry_id)
+                progress_bar.next()
+                # Due to error, we skip to the next element of the loop
+                continue
 
             logging.info("ID: %s | named entities retrieved", document.object_id)
 
@@ -126,24 +137,31 @@ if __name__ == '__main__':
                 ontology_service.add_named_entity(named_entity, arxiv_onto_document)
 
             logging.info("ID: %s | named entities added to the ontology", document.object_id)
-            progress_bar.next()
-
             # At the end of the PDF
             # We write the ontology in a folder
             filename = ontology_service.save("owl")
+            progress_bar.next()
 
     progress_bar.finish()
-    print("The ontology '" + filename + "' has been saved!")
-    logging.info("The ontology '%s' has been saved!", filename)
+
+    try:
+        print("The ontology '" + filename + "' has been saved!")
+        logging.info("The ontology '%s' has been saved!", filename)
+    except NameError:
+        pass
 
     # If HDFS is enabled
     if cli_options["hdfs"] is True:
         # Writing to HDFS (for Hadoop project)
         hdfs_service = HdfsService()
         csv_file = "documents_" + today + ".csv"
-        hdfs_service.write_documents(csv_file, documents)
-        print("The file '" + csv_file +
-              "' has been saved to the following HDFS folder '" +
-              str(hdfs_service.folder) + "'")
-        logging.info("The file '%s' has been saved to the following HDFS folder '%s'",
-                     csv_file, str(hdfs_service.folder))
+        try:
+            hdfs_service.write_documents(csv_file, documents)
+            print("The file '" + csv_file +
+                  "' has been saved to the following HDFS folder '" +
+                  str(hdfs_service.folder) + "'")
+            logging.info("The file '%s' has been saved to the following HDFS folder '%s'",
+	                     csv_file, str(hdfs_service.folder))
+        except HdfsError as err:
+            print(f"HdfsError: {err}")
+            logging.error("HdfsError: '%s'", err)

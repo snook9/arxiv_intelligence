@@ -25,31 +25,40 @@ class HdfsService():
 
     def write_documents(self: object, csv_filename: str, documents: List[DocumentEntity]):
         """Write a Documents list in a CSV file, into the HDFS folder (self.folder)"""
-        try:
-            with self._client.write(
-                    str(self.folder.joinpath(csv_filename)), encoding="utf-8"
-                ) as csv_file:
+        with self._client.write(
+                str(self.folder.joinpath(csv_filename)), encoding="utf-8"
+            ) as csv_file:
 
-                fieldnames = ["entry_id", "updated", "published", "title", "authors",
-                              "summary", "comment", "journal_ref", "doi", "primary_category",
-                              "categories", "pdf_url", "number_of_pages", "raw_info"]
-                writer = csv.DictWriter(csv_file, delimiter=';', fieldnames=fieldnames)
+            fieldnames = ["entry_id", "updated", "published", "title", "authors",
+                          "summary", "primary_category",
+                          "categories", "pdf_url", "number_of_pages"]
+            writer = csv.DictWriter(csv_file, delimiter=';', fieldnames=fieldnames)
 
-                writer.writeheader()
-                for document in documents:
-                    writer.writerow({"entry_id": document.entry_id,
-                                     "updated": document.updated,
-                                     "published": document.published,
-                                     "title": document.title,
-                                     "authors": document.authors,
-                                     "summary": document.summary,
-                                     "comment": document.comment,
-                                     "journal_ref": document.journal_ref,
-                                     "doi": document.doi,
-                                     "primary_category": document.primary_category,
-                                     "categories": document.categories,
-                                     "pdf_url": document.pdf_url,
-                                     "number_of_pages": document.number_of_pages,
-                                     "raw_info": document.raw_info})
-        except HdfsError as err:
-            print(f"HdfsError: {err}")
+            writer.writeheader()
+            for document in documents:
+                writer.writerow({
+                "entry_id": "\'" + str(document.entry_id).replace("\'", " ") + "\'",
+                "updated": "\'" + document.updated.strftime("%Y-%m-%d") + "\'",
+                "published": "\'" + document.published.strftime("%Y-%m-%d") + "\'",
+                "title": "\'" + str(document.title) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "authors": "\'" + ', '.join(str(author.name) for author in document.authors) + "\'",
+                "summary": "\'" + str(document.summary) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "primary_category": "\'" + str(document.primary_category) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "categories": "\'" + ', '.join(str(category) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") for category in document.categories) + "\'",
+                "pdf_url": "\'" + str(document.pdf_url) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "number_of_pages": document.number_of_pages})
