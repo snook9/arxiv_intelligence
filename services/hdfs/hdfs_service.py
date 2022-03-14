@@ -37,13 +37,28 @@ class HdfsService():
             writer.writeheader()
             for document in documents:
                 writer.writerow({
-                    "entry_id": "\'" + str(document.entry_id).replace("\'", " ") + "\'",
-                    "updated": "\'" + document.updated.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
-                    "published": "\'" + document.published.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
-                    "title": "\'" + str(document.title).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
-                    "authors": "\'" + ', '.join(str(author.name) for author in document.authors) + "\'",
-                    "summary": "\'" + str(document.summary).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
-                    "primary_category": "\'" + str(document.primary_category).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
-                    "categories": "\'" + ', '.join(str(category).replace("\n", " ").replace(";", ":").replace("\'", " ") for category in document.categories) + "\'",
-                    "pdf_url": "\'" + str(document.pdf_url).replace("\n", " ").replace(";", ":").replace("\'", " ") + "\'",
-                    "number_of_pages": document.number_of_pages})
+                "entry_id": "\'" + str(document.entry_id).replace("\'", " ") + "\'",
+                "updated": "\'" + document.updated.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
+                "published": "\'" + document.published.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
+                "title": "\'" + str(document.title) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "authors": "\'" + ', '.join(str(author.name) for author in document.authors) + "\'",
+                "summary": "\'" + str(document.summary) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "primary_category": "\'" + str(document.primary_category) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "categories": "\'" + ', '.join(str(category) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") for category in document.categories) + "\'",
+                "pdf_url": "\'" + str(document.pdf_url) \
+                    .replace("\n", " ") \
+                    .replace(";", ":") \
+                    .replace("\'", " ") + "\'",
+                "number_of_pages": document.number_of_pages})
