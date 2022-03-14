@@ -38,8 +38,8 @@ class HdfsService():
             for document in documents:
                 writer.writerow({
                 "entry_id": "\'" + str(document.entry_id).replace("\'", " ") + "\'",
-                "updated": "\'" + document.updated.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
-                "published": "\'" + document.published.strftime("%Y-%m-%dT%H:%M:%S") + "\'",
+                "updated": "\'" + document.updated.strftime("%Y-%m-%d") + "\'",
+                "published": "\'" + document.published.strftime("%Y-%m-%d") + "\'",
                 "title": "\'" + str(document.title) \
                     .replace("\n", " ") \
                     .replace(";", ":") \
