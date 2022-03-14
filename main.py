@@ -29,8 +29,8 @@ def print_help(script_name: str):
                        'from the named entities located in the articles.\n'
                        'After execution, the owl file is generated in the owl folder.\n'
                        'The category is fixed to cs.AI.\n'
-                       '\t-h | --help\t\t\t: show this help\n'
-                       '\t-v | --version\t\t\t: show the version of this software\n'
+                       '\t-h | --help\t\t: show this help\n'
+                       '\t-v | --version\t\t: show the version of this software\n'
                        '\t-w | --webservice=[url]\t: set the url of the named entities web service '
                        '(you must use an instance of the following web service: '
                        'https://github.com/snook9/arxiv_intelligence_ner_ws)\n'
@@ -38,8 +38,8 @@ def print_help(script_name: str):
                        '\t-n | --number=[value]\t: '
                        'set the max articles number extracted from arxiv.org\n'
                        'default value is 2\n'
-                       '\t-d | --hdfs\t\t: enable writing to HDFS for Hadoop project\n'
-                       'default disabled')
+                       '\t-d | --hdfs\t\t: enable writing to HDFS for big data projects\n'
+                       'default disabled. Nota: HDFS server URL is hardcoded currently')
 
 def parse_opt(script_name: str, argv):
     """Parse options from CLI"""
@@ -80,6 +80,7 @@ if __name__ == '__main__':
     # Creating log config
     today = datetime.today().strftime("%Y-%m-%d-%H-%M-%S.%f")
     logging.basicConfig(filename=log_folder.joinpath(today + ".log"), level=logging.DEBUG)
+    print("Events are logged in the folder:", log_folder)
 
     # We retreive the PDF documents
     documents = ArxivApi(cli_options["number"]).get_documents()
