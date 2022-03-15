@@ -130,10 +130,16 @@ if __name__ == '__main__':
                 time.sleep(2)
                 document_metadata = ner_api.get_document_metadata(document.object_id)
                 # We keep the metadata
-                document.number_of_pages = document_metadata.number_of_pages
-                document.raw_info = document_metadata.raw_info
-                document.named_entities = document_metadata.named_entities
-                document.status = document_metadata.status
+                try:
+                    document.number_of_pages = document_metadata.number_of_pages
+                    document.raw_info = document_metadata.raw_info
+                    document.named_entities = document_metadata.named_entities
+                    document.status = document_metadata.status
+                except AttributeError as err:
+                    logging.error("ID: %s | error when requesting metadata '%s'",
+                                  document.object_id, document.entry_id)
+                    document.status = "ERROR"
+                    break
 
             # If timeout or an error occured
             if TIMEOUT is True or document.status == "ERROR":
