@@ -6,6 +6,10 @@ Highlighting the relationship between authors and scientists
 
 import json
 import urllib.request
+import logging
+from urllib.error import HTTPError, URLError
+from socket import timeout
+from http.client import RemoteDisconnected
 from entities.message import MessageEntity
 from entities.document import DocumentEntity
 from .ner_api_interface import NerApiInterface
@@ -20,13 +24,21 @@ class NerApi(NerApiInterface):
     def _get(base_url: str, parameters: str):
         try:
             # We open the URL
-            with urllib.request.urlopen(base_url + parameters) as response:
+            with urllib.request.urlopen(base_url + parameters, timeout=30) as response:
                 return response.read()
         # Except, error in the given URL
         except ValueError as err:
             print(f"Incorrect URL: {err}")
-        except urllib.error.URLError as err:
+            logging.error("Incorrect URL: %s", err)
+        except (HTTPError, URLError) as err:
             print(f"Incorrect URL: {err}")
+            logging.error("Incorrect URL: %s", err)
+        except timeout as err:
+            print(f"timeout: {err}")
+            logging.error("timeout: %s", err)
+        except RemoteDisconnected as err:
+            print(f"RemoteDisconnected: {err}")
+            logging.error("RemoteDisconnected: %s", err)
 
         return None
 

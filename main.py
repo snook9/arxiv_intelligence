@@ -102,6 +102,8 @@ if __name__ == '__main__':
         message = ner_api.post_document(document.pdf_url)
         if message is None:
             logging.error("Error while sending the file: %s", document.pdf_url)
+            # We wait few seconds before retry
+            time.sleep(2)
             continue
 
         logging.info("ID: %s | %s", message.object_id, message.message)
@@ -143,7 +145,8 @@ if __name__ == '__main__':
 
             # If timeout or an error occured
             if TIMEOUT is True or document.status == "ERROR":
-                logging.error("ID: %s | error when extracting named entities of the document '%s', timeout is '%s'",
+                logging.error("ID: %s | error when extracting named entities of the document '%s', \
+                              timeout is '%s'",
                               document.object_id, document.entry_id, TIMEOUT)
                 progress_bar.next()
                 # Due to error, we skip to the next element of the loop
