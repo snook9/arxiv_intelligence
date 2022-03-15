@@ -32,6 +32,10 @@ class OntologyService():
             return None
         # function to escape XML character data
         text = escape(text)
+        text = text.replace('\n', '')
+        text = text.replace('\r', '')
+        text = text.replace('\f', '')
+        text = text.replace('\b', '')
         text = clean_char(text)
         return text
 
