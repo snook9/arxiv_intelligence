@@ -10,7 +10,7 @@ The category is fixed to cs.AI.
 
 ## With Docker
 
-    sudo docker build -t arxiv_intelligence .
+    docker build -t arxiv_intelligence .
 
 ## Dependencies
 
@@ -36,11 +36,11 @@ Install arXiv Intelligence:
 
 ## With Docker
 
-    sudo docker run -ti arxiv_intelligence
+    docker run -ti arxiv_intelligence
 
 ### Help
 
-    sudo docker run -ti arxiv_intelligence -h
+    docker run -ti arxiv_intelligence -h
 
 ## With Python
 
