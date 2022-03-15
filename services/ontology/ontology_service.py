@@ -36,6 +36,13 @@ class OntologyService():
         text = text.replace('\r', '')
         text = text.replace('\f', '')
         text = text.replace('\b', '')
+        text = text.replace('"', '')
+        text = text.replace('[', '')
+        text = text.replace(']', '')
+        text = text.replace('{', '')
+        text = text.replace('}', '')
+        text = text.replace('#', '')
+        text = text.replace('|', '')
         text = clean_char(text)
         return text
 
