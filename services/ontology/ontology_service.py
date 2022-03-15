@@ -11,6 +11,7 @@ from owlready2 import get_ontology, AllDifferent
 from entities.named_entity import NamedEntity, NamedEntityTypeEnum
 from entities.named_entity import NamedEntityRelationshipEnum
 from entities.document import DocumentEntity
+from common.cleaner import clean_char
 
 class OntologyService():
     """Ontology service"""
@@ -31,16 +32,7 @@ class OntologyService():
             return None
         # function to escape XML character data
         text = escape(text)
-        text = text.replace('|', '')
-        text = text.replace('\\', '')
-        text = text.replace('{', '')
-        text = text.replace('}', '')
-        text = text.replace('', '')
-        text = text.replace('', '')
-        text = text.replace('', '')
-        text = text.replace('', '')
-        text = text.replace('𝒜', '')
-        text = text.replace('𝐸', '')
+        text = clean_char(text)
         return text
 
     @staticmethod

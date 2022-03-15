@@ -24,7 +24,7 @@ class NerApi(NerApiInterface):
     def _get(base_url: str, parameters: str):
         try:
             # We open the URL
-            with urllib.request.urlopen(base_url + parameters, timeout=30) as response:
+            with urllib.request.urlopen(base_url + parameters, timeout=60) as response:
                 return response.read()
         # Except, error in the given URL
         except ValueError as err:
