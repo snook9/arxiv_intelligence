@@ -34,7 +34,6 @@ class NerApi(NerApiInterface):
             print(f"Incorrect URL: {err}")
             logging.error("Incorrect URL: %s", err)
         except timeout as err:
-            print(f"timeout: {err}")
             logging.error("timeout: %s", err)
         except RemoteDisconnected as err:
             print(f"RemoteDisconnected: {err}")

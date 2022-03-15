@@ -146,10 +146,12 @@ class OntologyService():
         # Else, we return none
         return None
 
-    def save(self: object, folder: str):
-        """Save the current ontology built in an OWL file"""
-        # Before to save the ontology, we make sure that all documents are differents
+    def finish(self: object):
+        """Before to save the ontology, make sure that all documents are differents
+        This method should be call only one time"""
         AllDifferent(self._foaf.Document.instances())
 
+    def save(self: object, folder: str):
+        """Save the current ontology built in an OWL file"""
         self._onto.save(str(Path().joinpath(folder, self._filename)))
         return self._filename

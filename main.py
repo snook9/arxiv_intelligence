@@ -104,6 +104,7 @@ if __name__ == '__main__':
             logging.error("Error while sending the file: %s", document.pdf_url)
             # We wait few seconds before retry
             time.sleep(2)
+            progress_bar.next()
             continue
 
         logging.info("ID: %s | %s", message.object_id, message.message)
@@ -161,18 +162,19 @@ if __name__ == '__main__':
                 ontology_service.add_named_entity(named_entity, arxiv_onto_document)
 
             logging.info("ID: %s | named entities added to the ontology", document.object_id)
-            # At the end of the PDF
+            # At the end of each PDF
             # We write the ontology in a folder
             filename = ontology_service.save("owl")
             progress_bar.next()
 
     progress_bar.finish()
 
-    try:
-        print("The ontology '" + filename + "' has been saved!")
-        logging.info("The ontology '%s' has been saved!", filename)
-    except NameError:
-        pass
+    # At the end
+    # We finish the ontology, then write it
+    ontology_service.finish()
+    filename = ontology_service.save("owl")
+    print("The ontology '" + filename + "' has been saved!")
+    logging.info("The ontology '%s' has been saved!", filename)
 
     # If HDFS is enabled
     if cli_options["hdfs"] is True:
