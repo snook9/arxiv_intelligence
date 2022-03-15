@@ -42,7 +42,7 @@ def print_help(script_name: str):
                        'default disabled. Nota: HDFS server URL is hardcoded currently')
 
 def parse_opt(script_name: str, argv):
-    """Parse options from CLI"""
+    """Parse options from CLI arguments"""
     options = {"webservice": "http://localhost:5000/", "number": 2, "hdfs": False}
     try:
         opts, _ = getopt.getopt(
@@ -68,8 +68,10 @@ def parse_opt(script_name: str, argv):
     return options
 
 if __name__ == '__main__':
+    # Get the user options (CLI arguments)
     cli_options = parse_opt(sys.argv[0], sys.argv[1:])
 
+    # Print welcome message
     print(PROGRAM_NAME, PROGRAM_VERSION)
 
     # We create the log folder
@@ -108,11 +110,23 @@ if __name__ == '__main__':
         if message.object_id != -1:
             # Here, all it's ok, so we save the object id
             document.object_id = message.object_id
-            # We force the status to pending for the while loop
+            # We init the status to pending for the while loop
             document.status = "PENDING"
             # We get the metadata of the PDF
             # As the process is async, we try the request several times
+            # First, to calculate a timeout, we start a counter
+            start_time = time.perf_counter_ns()
+            TIMEOUT = False
             while document.status == "PENDING":
+                # We check the elapsed time
+                counter = (time.perf_counter_ns() - start_time) / 1000 / 1000 / 1000
+                # If the elapsed time is more than 300 seconds
+                if counter > 300:
+                    # We leave the while loop
+                    TIMEOUT = True
+                    break
+
+                # We wait few seconds to give the API time to process the file
                 time.sleep(2)
                 document_metadata = ner_api.get_document_metadata(document.object_id)
                 # We keep the metadata
@@ -121,9 +135,10 @@ if __name__ == '__main__':
                 document.named_entities = document_metadata.named_entities
                 document.status = document_metadata.status
 
-            if document.status == "ERROR":
-                logging.error("ID: %s | error when extracting named entities of the document '%s'",
-                              document.object_id, document.entry_id)
+            # If timeout or an error occured
+            if TIMEOUT is True or document.status == "ERROR":
+                logging.error("ID: %s | error when extracting named entities of the document '%s', timeout is '%s'",
+                              document.object_id, document.entry_id, TIMEOUT)
                 progress_bar.next()
                 # Due to error, we skip to the next element of the loop
                 continue
@@ -152,7 +167,7 @@ if __name__ == '__main__':
 
     # If HDFS is enabled
     if cli_options["hdfs"] is True:
-        # Writing to HDFS (for Hadoop project)
+        # Writing to HDFS (for big data projects)
         hdfs_service = HdfsService()
         csv_file = "documents_" + today + ".csv"
         try:
