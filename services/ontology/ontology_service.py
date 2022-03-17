@@ -79,7 +79,6 @@ class OntologyService():
         """Add a primary category to the ontology"""
         with self._onto:
             category_object = self._onto.ArxivDocumentCategory(self._escape_iri(category))
-            category_object.title.append(self._escape_value(category))
             arxiv_document.has_as_primary_category.append(category_object)
 
     def _add_categories(self: object, categories, arxiv_document):
@@ -87,7 +86,6 @@ class OntologyService():
         for category in categories:
             with self._onto:
                 category_object = self._onto.ArxivDocumentCategory(self._escape_iri(category))
-                category_object.title.append(self._escape_value(category))
                 arxiv_document.has_as_category.append(category_object)
 
     def add_document(self: object, document: DocumentEntity):
