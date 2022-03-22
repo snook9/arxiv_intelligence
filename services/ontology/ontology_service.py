@@ -11,6 +11,7 @@ from owlready2 import get_ontology, AllDifferent
 from entities.named_entity import NamedEntity, NamedEntityTypeEnum
 from entities.named_entity import NamedEntityRelationshipEnum
 from entities.document import DocumentEntity
+from common.cleaner import clean_char
 
 class OntologyService():
     """Ontology service"""
@@ -31,16 +32,18 @@ class OntologyService():
             return None
         # function to escape XML character data
         text = escape(text)
-        text = text.replace('|', '')
-        text = text.replace('\\', '')
+        text = text.replace('\n', '')
+        text = text.replace('\r', '')
+        text = text.replace('\f', '')
+        text = text.replace('\b', '')
+        text = text.replace('"', '')
+        text = text.replace('[', '')
+        text = text.replace(']', '')
         text = text.replace('{', '')
         text = text.replace('}', '')
-        text = text.replace('', '')
-        text = text.replace('', '')
-        text = text.replace('', '')
-        text = text.replace('', '')
-        text = text.replace('𝒜', '')
-        text = text.replace('𝐸', '')
+        text = text.replace('#', '')
+        text = text.replace('|', '')
+        text = clean_char(text)
         return text
 
     @staticmethod
@@ -76,7 +79,6 @@ class OntologyService():
         """Add a primary category to the ontology"""
         with self._onto:
             category_object = self._onto.ArxivDocumentCategory(self._escape_iri(category))
-            category_object.title.append(self._escape_value(category))
             arxiv_document.has_as_primary_category.append(category_object)
 
     def _add_categories(self: object, categories, arxiv_document):
@@ -84,7 +86,6 @@ class OntologyService():
         for category in categories:
             with self._onto:
                 category_object = self._onto.ArxivDocumentCategory(self._escape_iri(category))
-                category_object.title.append(self._escape_value(category))
                 arxiv_document.has_as_category.append(category_object)
 
     def add_document(self: object, document: DocumentEntity):
@@ -150,10 +151,12 @@ class OntologyService():
         # Else, we return none
         return None
 
-    def save(self: object, folder: str):
-        """Save the current ontology built in an OWL file"""
-        # Before to save the ontology, we make sure that all documents are differents
+    def finish(self: object):
+        """Before to save the ontology, make sure that all documents are differents
+        This method should be call only one time"""
         AllDifferent(self._foaf.Document.instances())
 
+    def save(self: object, folder: str):
+        """Save the current ontology built in an OWL file"""
         self._onto.save(str(Path().joinpath(folder, self._filename)))
         return self._filename

@@ -18,7 +18,7 @@ from services.hdfs.hdfs_service import HdfsService
 from services.ontology.ontology_service import OntologyService
 
 PROGRAM_NAME = "arXiv Intelligence"
-PROGRAM_VERSION = "0.9.0"
+PROGRAM_VERSION = "1.0.0"
 
 def print_help(script_name: str):
     """Show the software CLI help"""
@@ -42,7 +42,7 @@ def print_help(script_name: str):
                        'default disabled. Nota: HDFS server URL is hardcoded currently')
 
 def parse_opt(script_name: str, argv):
-    """Parse options from CLI"""
+    """Parse options from CLI arguments"""
     options = {"webservice": "http://localhost:5000/", "number": 2, "hdfs": False}
     try:
         opts, _ = getopt.getopt(
@@ -68,8 +68,10 @@ def parse_opt(script_name: str, argv):
     return options
 
 if __name__ == '__main__':
+    # Get the user options (CLI arguments)
     cli_options = parse_opt(sys.argv[0], sys.argv[1:])
 
+    # Print welcome message
     print(PROGRAM_NAME, PROGRAM_VERSION)
 
     # We create the log folder
@@ -100,6 +102,9 @@ if __name__ == '__main__':
         message = ner_api.post_document(document.pdf_url)
         if message is None:
             logging.error("Error while sending the file: %s", document.pdf_url)
+            # We wait few seconds before retry
+            time.sleep(2)
+            progress_bar.next()
             continue
 
         logging.info("ID: %s | %s", message.object_id, message.message)
@@ -108,22 +113,42 @@ if __name__ == '__main__':
         if message.object_id != -1:
             # Here, all it's ok, so we save the object id
             document.object_id = message.object_id
-            # We force the status to pending for the while loop
+            # We init the status to pending for the while loop
             document.status = "PENDING"
             # We get the metadata of the PDF
             # As the process is async, we try the request several times
+            # First, to calculate a timeout, we start a counter
+            start_time = time.perf_counter_ns()
+            TIMEOUT = False
             while document.status == "PENDING":
+                # We check the elapsed time
+                counter = (time.perf_counter_ns() - start_time) / 1000 / 1000 / 1000
+                # If the elapsed time is more than 300 seconds
+                if counter > 300:
+                    # We leave the while loop
+                    TIMEOUT = True
+                    break
+
+                # We wait few seconds to give the API time to process the file
                 time.sleep(2)
                 document_metadata = ner_api.get_document_metadata(document.object_id)
                 # We keep the metadata
-                document.number_of_pages = document_metadata.number_of_pages
-                document.raw_info = document_metadata.raw_info
-                document.named_entities = document_metadata.named_entities
-                document.status = document_metadata.status
+                try:
+                    document.number_of_pages = document_metadata.number_of_pages
+                    document.raw_info = document_metadata.raw_info
+                    document.named_entities = document_metadata.named_entities
+                    document.status = document_metadata.status
+                except AttributeError as err:
+                    logging.error("ID: %s | error when requesting metadata '%s'",
+                                  document.object_id, document.entry_id)
+                    document.status = "ERROR"
+                    break
 
-            if document.status == "ERROR":
-                logging.error("ID: %s | error when extracting named entities of the document '%s'",
-                              document.object_id, document.entry_id)
+            # If timeout or an error occured
+            if TIMEOUT is True or document.status == "ERROR":
+                logging.error("ID: %s | error when extracting named entities of the document '%s', \
+                              timeout is '%s'",
+                              document.object_id, document.entry_id, TIMEOUT)
                 progress_bar.next()
                 # Due to error, we skip to the next element of the loop
                 continue
@@ -137,22 +162,23 @@ if __name__ == '__main__':
                 ontology_service.add_named_entity(named_entity, arxiv_onto_document)
 
             logging.info("ID: %s | named entities added to the ontology", document.object_id)
-            # At the end of the PDF
+            # At the end of each PDF
             # We write the ontology in a folder
             filename = ontology_service.save("owl")
             progress_bar.next()
 
     progress_bar.finish()
 
-    try:
-        print("The ontology '" + filename + "' has been saved!")
-        logging.info("The ontology '%s' has been saved!", filename)
-    except NameError:
-        pass
+    # At the end
+    # We finish the ontology, then write it
+    ontology_service.finish()
+    filename = ontology_service.save("owl")
+    print("The ontology '" + filename + "' has been saved!")
+    logging.info("The ontology '%s' has been saved!", filename)
 
     # If HDFS is enabled
     if cli_options["hdfs"] is True:
-        # Writing to HDFS (for Hadoop project)
+        # Writing to HDFS (for big data projects)
         hdfs_service = HdfsService()
         csv_file = "documents_" + today + ".csv"
         try:
