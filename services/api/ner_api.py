@@ -22,6 +22,11 @@ class NerApi(NerApiInterface):
 
     @staticmethod
     def _get(base_url: str, parameters: str):
+        # If the URL doesn't finish with a /
+        if base_url[-1] != '/':
+            # We add it
+            base_url += '/'
+
         try:
             # We open the URL
             with urllib.request.urlopen(base_url + parameters, timeout=120) as response:

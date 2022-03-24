@@ -36,7 +36,11 @@ Install arXiv Intelligence:
 
 ## With Docker
 
-    docker run -ti arxiv_intelligence
+    docker run -v /path/to/owl/:/app/owl -v /path/to/log/:/app/log -ti arxiv_intelligence -n 1 -w http://172.17.0.2:5000/
+
+*Replace the 172.17.0.2:5000 IP and port by the real IP and port of the 'arxiv_intelligence_ner_ws' web service.*</br>
+*'/path/to/owl/' must be the folder where the file 'template-arxiv-intelligence.owl' is*</br>
+*'/path/to/log/' will be the folder to write log files*</br>
 
 ### Help
 
