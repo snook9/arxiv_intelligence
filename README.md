@@ -70,7 +70,7 @@ After running, an ontology file, named "output_[datetime].owl", will be generate
 
     apt install pylint
     export PYTHONPATH="venv/lib/python3.9/site-packages/"
-    pylint ./*
+    pylint --disable too-few-public-methods --disable too-many-instance-attributes --disable too-many-branches --disable too-many-statements ./main.py ./services ./entities ./tests
 
 ## pytest
 
